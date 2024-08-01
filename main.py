@@ -1,11 +1,10 @@
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 import streamlit as st
 from typing_extensions import override
 from openai import AssistantEventHandler
 from streamlit_extras.buy_me_a_coffee import button
-import time
 button(username="simjoy", floating=True, width=221)
 
 import streamlit.components.v1 as components
