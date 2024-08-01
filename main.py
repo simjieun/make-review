@@ -1,5 +1,5 @@
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 import streamlit as st
 from typing_extensions import override
@@ -9,15 +9,6 @@ import time
 button(username="simjoy", floating=True, width=221)
 
 import streamlit.components.v1 as components
-
-_ = components.html(
-        """
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2532708487251314"
-     crossorigin="anonymous"></script>
-    """,
-        height=0,
-        width=0,
-    )
 
 st.header("리뷰 제조기 🤖")
 st.write("👀 나는 T라서 리뷰에 팩트만 말해, F감성 리뷰는 내가 만들어줄게,")
@@ -85,3 +76,20 @@ with st.form("my_form"):
           st.write_stream(st.session_state.messages)
 
 
+# AdSense code
+adsense_code = """
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2532708487251314"
+     crossorigin="anonymous"></script>
+<!-- reviewer -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2532708487251314"
+     data-ad-slot="2313811029"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+"""
+
+components.html(adsense_code, height=200)
