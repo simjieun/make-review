@@ -54,13 +54,13 @@ class EventHandler(AssistantEventHandler):
 with st.form("my_form"):
     upjong = st.text_input("업종을 입력하세요.")
     st.text("별점을 입력하세요.")
-    sentiment_mapping = ["one", "two", "three", "four", "five"]
-    star = st.feedback("stars")
+    sentiment_mapping = ["1", "2", "3", "4", "5"]
+    selected = st.feedback("stars")
     submitted = st.form_submit_button("리뷰 생성")
     message = client.beta.threads.messages.create(
         thread_id=thread.id,
         role="user",
-        content="업종: " + upjong + ", 별점: " + str(star) + "점 이라고 입력했습니다. 리뷰를 생성해주세요. 그리고 이모지도 넣어서 리뷰를 마무리해주세요."
+        content="업종: " + upjong + ", 별점: " + sentiment_mapping[selected] + "점 이라고 입력했습니다. 리뷰를 생성해주세요. 그리고 이모지도 넣어서 리뷰를 마무리해주세요."
     )
     if submitted:
         st.session_state.messages = []
@@ -79,13 +79,12 @@ with st.form("my_form"):
 adsense_code = """
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2532708487251314"
      crossorigin="anonymous"></script>
-<!-- reviewer -->
 <ins class="adsbygoogle"
-     style="display:block"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
      data-ad-client="ca-pub-2532708487251314"
-     data-ad-slot="2313811029"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
+     data-ad-slot="5381863461"></ins>
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
