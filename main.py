@@ -60,7 +60,7 @@ with st.form("my_form"):
     message = client.beta.threads.messages.create(
         thread_id=thread.id,
         role="user",
-        content="업종: " + upjong + ", 별점: " + sentiment_mapping[selected] + "점 이라고 입력했습니다. 리뷰를 생성해주세요. 그리고 이모지도 넣어서 리뷰를 마무리해주세요."
+        content="업종: " + upjong + ", 별점: " + str(sentiment_mapping[selected]) + "점 이라고 입력했습니다. 리뷰를 생성해주세요. 그리고 이모지도 넣어서 리뷰를 마무리해주세요."
     )
     if submitted:
         st.session_state.messages = []
