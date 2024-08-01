@@ -5,20 +5,33 @@ import streamlit as st
 from typing_extensions import override
 from openai import AssistantEventHandler
 from streamlit_extras.buy_me_a_coffee import button
+import time
 button(username="simjoy", floating=True, width=221)
 
+import streamlit.components.v1 as components
+
+_ = components.html(
+        """
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2532708487251314"
+     crossorigin="anonymous"></script>
+    """,
+        height=0,
+        width=0,
+    )
+
 st.header("리뷰 제조기 🤖")
-st.write("🍀 리뷰 업종과 별점을 입력하면 리뷰를 생성해드립니다. 🍀")
+st.write("👀 나는 T라서 리뷰에 팩트만 말해, F감성 리뷰는 내가 만들어줄게,")
+st.write("업종과 별점을 입력해줘🙏 바로 생성해줄께 🍀")
 
 from openai import OpenAI
 client = OpenAI()
   
-assistant = client.beta.assistants.create(
-  name="Review Generator",
-  instructions="You are a review maker. Once you receive the industry and star rating, create a review according to that.",
-  tools=[{"type": "code_interpreter"}],
-  model="gpt-4o",
-)
+# assistant = client.beta.assistants.create(
+#   name="Review Generator",
+#   instructions="You are a review maker. Once you receive the industry and star rating, create a review according to that.",
+#   tools=[{"type": "code_interpreter"}],
+#   model="gpt-4o",
+# )
 
 thread = client.beta.threads.create()
 
@@ -60,12 +73,15 @@ with st.form("my_form"):
         content="업종: " + upjong + ", 별점: " + str(star) + "점 이라고 입력했습니다. 리뷰를 생성해주세요. 그리고 이모지도 넣어서 리뷰를 마무리해주세요."
     )
     if submitted:
-        with client.beta.threads.runs.stream(
-            thread_id=thread.id,
-            assistant_id=assistant.id,
-            instructions="이모지는 중간중간에 넣어주세요. 문장은 최대 4줄로 완성시켜줘.",
-            event_handler=EventHandler(),
-        ) as stream:
-            stream.until_done()
-        
-        st.write_stream(st.session_state.messages)
+        st.session_state.messages = []
+        with st.spinner('리뷰 생성중 🥳'):
+          with client.beta.threads.runs.stream(
+              thread_id=thread.id,
+              assistant_id="asst_0etURnvod9b5nkDCr4SNIssc",
+              event_handler=EventHandler(),
+          ) as stream:
+              stream.until_done()
+          
+          st.write_stream(st.session_state.messages)
+
+
