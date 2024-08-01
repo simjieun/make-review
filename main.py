@@ -1,5 +1,5 @@
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 import streamlit as st
 from typing_extensions import override
@@ -11,7 +11,7 @@ import streamlit.components.v1 as components
 
 st.header("리뷰 제조기 🤖")
 st.write("👀 나는 T라서 리뷰에 팩트만 말해, F감성 리뷰는 내가 만들어줄게,")
-st.write("업종과 별점을 입력해줘🙏 바로 생성해줄께 🍀")
+st.write("업종과 별점을 입력해줘🙏 (글자수도 제한할 수 있어!💪) 바로 생성해줄께 🍀")
 
 from openai import OpenAI
 client = OpenAI()
@@ -52,17 +52,25 @@ class EventHandler(AssistantEventHandler):
             print(f"\n logs : {output.logs}", flush=True)
 
 with st.form("my_form"):
-    upjong = st.text_input("업종을 입력하세요.")
-    st.text("별점을 입력하세요.")
-    sentiment_mapping = ["1", "2", "3", "4", "5"]
-    selected = st.feedback("stars")
+    col1, col2 = st.columns(2)
+    with col1:
+      upjong = st.text_input("업종을 입력하세요.")
+      st.text("별점을 입력하세요.")
+      sentiment_mapping = ["1", "2", "3", "4", "5"]
+      selected = st.feedback("stars")
+    with col2:
+      number = st.number_input(
+          "글자수 제한", value=200, step=100, placeholder="리뷰의 길이를 입력하세요."
+      )
+    
     submitted = st.form_submit_button("리뷰 생성")
     if selected is not None:
       message = client.beta.threads.messages.create(
           thread_id=thread.id,
           role="user",
-          content="업종: " + upjong + ", 별점: " + sentiment_mapping[selected] + "점 이라고 입력했습니다. 리뷰를 생성해주세요. 그리고 이모지도 넣어서 리뷰를 마무리해주세요."
+          content="업종: " + upjong + ", 별점: " + sentiment_mapping[selected] + "점 이라고 입력했습니다. 리뷰 글자수는 "+str(number)+" 자리까지 리뷰를 생성해주세요. 그리고 이모지도 넣어서 리뷰를 마무리해주세요."
       )
+      print(message)
     if submitted:
         st.session_state.messages = []
         with st.spinner('리뷰 생성중 🥳'):
@@ -91,4 +99,4 @@ adsense_code = """
 </script>
 """
 
-components.html(adsense_code, height=200)
+components.html(adsense_code, width=200, height=200)
